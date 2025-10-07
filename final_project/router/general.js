@@ -66,4 +66,52 @@ public_users.get('/review/:isbn',function (req, res) {
 
 });
 
+// Get books with promises
+public_users.get('/books',function (req, res) {
+  const get_books = new Promise((resolve, reject) => {
+      resolve(books);
+  });
+  get_books.then((books) => {
+      return res.send(JSON.stringify(books,null,4));
+  });
+});
+
+// Get book details based on ISBN with promises
+public_users.get('/books/isbn/:isbn',function (req, res) {
+  let isbn = req.params.isbn;
+  const get_books = new Promise((resolve, reject) => {
+      resolve(books[isbn]);
+  });
+  get_books.then((books) => {
+      return res.send(books);
+  }); 
+
+});
+
+// Get book details based on author with promises
+public_users.get('/books/author/:author',function (req, res) {
+  let author = req.params.author;
+  const get_books = new Promise((resolve, reject) => {
+      let filter_author=  Object.values(books).filter(book=> book.author.toLowerCase() === author.toLowerCase());
+      resolve(filter_author);
+  });
+  get_books.then((filter_author) => {
+      return res.send(filter_author);
+  });   
+});
+
+// Get all books based on title with promises
+public_users.get('/books/title/:title',function (req, res) {
+  let title = req.params.title;   
+  const get_books = new Promise((resolve, reject) => {  
+      let filter_title=  Object.values(books).filter(book=> book.title.toLowerCase() === title.toLowerCase());
+      resolve(filter_title);
+  });
+  get_books.then((filter_title) => {
+      return res.send(filter_title);
+  });   
+});
+
+
 module.exports.general = public_users;
+
